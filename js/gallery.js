@@ -76,6 +76,7 @@ function onOpenModal(event) {
     return;
   };
   window.addEventListener('keydown', onKeyPress);
+  window.addEventListener('keydown', onKeySibling);
   refs.jsLightbox.classList.add('is-open');
   addValueModal(event);
 };
@@ -84,6 +85,7 @@ function onOpenModal(event) {
 
 function onCloseModal() {
   window.removeEventListener('keydown', onKeyPress);
+  window.removeEventListener('keydown', onKeySibling);
   refs.jsLightbox.classList.remove('is-open');
   removeValueModal()
 };
@@ -104,5 +106,22 @@ function onKeyPress(event) {
 };
 
 
+function onKeySibling(event) { 
+  let imageIndex = galleryItems.findIndex(({ original }) => original === refs.lightboxImg.src);
 
+  if (event.code === "ArrowLeft") {
+    if (imageIndex === 0) {
+      imageIndex += galleryItems.length;
+    }
+    imageIndex -= 1;
+  }
+
+  if (event.code === "ArrowRight") {
+    if (imageIndex === galleryItems.length - 1) {
+      imageIndex -= galleryItems.length;
+    }
+    imageIndex += 1;
+  }
+  refs.lightboxImg.src = galleryItems[imageIndex].original;
+}
 
